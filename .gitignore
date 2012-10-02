@@ -1,6 +1,7 @@
 pom.xml
 *jar
 /lib/
+/bin/
 /classes/
 .lein-deps-sum
 /target/
