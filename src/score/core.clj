@@ -1,5 +1,6 @@
 (ns score.core
-  (:require [clojure.java.io :as io]
+  (:require [score.db :as db]
+            [clojure.java.io :as io]
             [clojure.string :as s]
             [clj-http.client :as client]
             [net.cgrand.enlive-html :as enlive]))
@@ -18,17 +19,16 @@
         progress (map #(-> % :attrs :style parse-progress) (enlive/select page [:.progress-bar]))]
     [total progress]))
 
-(def users (s/split-lines (slurp (io/resource "users.txt"))))
-
 (defn get-users-scores-async []
-  (zipmap users (map #(future (get-user-score %)) users)))
+  (zipmap users (map #(future (get-user-score (:name %))) (db/get-users))))
 
 (defn get-users-scores []
   (into {} (map (fn [[k v]] [k (deref v)]) (get-users-scores-async))))
 
+(defn events-to-score [e]
+  ; TODO
+  e)
+
 (comment
   (doseq [[user score] (get-users-scores)]
     (println user ": " score)))
-
-(defn events-to-score [e]
-  e)

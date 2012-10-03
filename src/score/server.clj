@@ -15,5 +15,5 @@
 (defn -main [& args]
   (db/init)
   (poll/start-poller)
-  (server/add-middleware debug-requests)
+  (if (= score-mode :dev) (server/add-middleware debug-requests))
   (server/start 8082 {:mode score-mode :ns 'score.web}))
