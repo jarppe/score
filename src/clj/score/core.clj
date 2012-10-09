@@ -20,7 +20,8 @@
     [total progress]))
 
 (defn get-users-scores-async []
-  (zipmap users (map #(future (get-user-score (:name %))) (db/get-users))))
+  (let [users (db/get-users)]
+    (zipmap (map :name users) (map #(future (get-user-score (:name %))) users))))
 
 (defn get-users-scores []
   (into {} (map (fn [[k v]] [k (deref v)]) (get-users-scores-async))))

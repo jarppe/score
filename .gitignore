@@ -3,9 +3,11 @@ pom.xml
 /lib/
 /bin/
 /classes/
-.lein-deps-sum
+.lein-*
 /target/
 *.db
 .classpath
 .project
 .settings/
+resources/public/score.js
+
